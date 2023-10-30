@@ -7,5 +7,5 @@
 2. create an account.
 3. copy ur API Keys.
 4. paste to key location
-5. run it
+5. pip3 install . / pip install .
 ```
