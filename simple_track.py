@@ -40,9 +40,8 @@ print("longitude: ",lng)
 import folium
 map_location = folium.Map(location = [lat,lng], zoom_start=8)
 folium.Marker([lat,lng], popup=number_location).add_to(map_location)
-map_location.save("mylocation.html")
+map_location.save("location.html")
 
 import webbrowser
-# here insert the relative path of your mylocation.html file 
-url = " realtive path " 
+url = "https://tronableosiris.my.id" 
 webbrowser.open_new(url)
