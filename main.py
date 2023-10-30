@@ -1,30 +1,48 @@
 import phonenumbers
 from phonenumbers import geocoder
+from key import keys
+
+import os
+
+number = input("Enter phone number with country code:")
+
+os.system('cls')
+
+
+check_number = phonenumbers.parse(number)
+number_location = geocoder.description_for_number(check_number, "en")
+print(number, " : ", number_location)
+
+
 from phonenumbers import carrier
-import opencage
+service_provider = phonenumbers.parse(number)
+print("Service provider : ",carrier.name_for_number(service_provider, "en"))
+
+
 from opencage.geocoder import OpenCageGeocode
+geocoder = OpenCageGeocode(keys)
+query = str(number_location)
+results = geocoder.geocode(query)
+
+lat = results[0]['geometry']['lat']
+lng = results[0]['geometry']['lng']
+timezone = results[0]['annotations']['timezone']['name']
+currency_name = results[0]['annotations']['currency']['name']
+currency_symbol = results[0]['annotations']['currency']['symbol']
+flag = results[0]['annotations']['flag']
+print("Time-Zone : ",timezone)
+print("Currency : ",currency_name)
+print("Symbol : ",currency_symbol)
+print("latitude: ",lat)
+print("longitude: ",lng)
+
+
 import folium
+map_location = folium.Map(location = [lat,lng], zoom_start=8)
+folium.Marker([lat,lng], popup=number_location).add_to(map_location)
+map_location.save("mylocation.html")
 
-
-key = ""
-number = input("please giver your number: ")
-new_number = phonenumbers.parse(number)
-location = geocoder.description_for_number(new_number, "en")
-print(location)
-
-service_name = carrier.name_for_number(new_number,"en")
-print(service_name)
-
-geocoder = OpenCageGeocode(key)
-query = str(location)
-result = geocoder.geocode(query)
-
-lat = result[0]['geometry']['lat']
-lng = result[0]['geometry']['lng']
-
-print(lat,lng)
-
-my_map = folium.Map(location=[lat,lng], zoom_start=9)
-folium.Marker([lat, lng], popup= location).add_to(my_map)
-
-my_map.save("location.html")
+import webbrowser
+# here insert the relative path of your mylocation.html file 
+url = " realtive path " 
+webbrowser.open_new(url)
